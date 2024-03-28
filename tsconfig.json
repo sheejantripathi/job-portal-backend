@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // or a specific ECMAScript target like "es6"
+    "module": "commonjs",
+    "lib": ["esnext", "dom"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true, // it's a good practice to enable strict type-checking
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist", // or your preferred output directory
+    "rootDir": "./src" // or your source directory
+  },
+  "include": ["src/**/*"]
+}
