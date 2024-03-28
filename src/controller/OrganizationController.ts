@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { OrganizationService } from "../service/OrganizationService";
+import { OrganizationService } from "../service/OrganizationService.js";
 
 export class OrganizationController {
     private organizationService = new OrganizationService();

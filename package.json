@@ -2,11 +2,12 @@
   "name": "react-jobs-backend",
   "version": "1.0.0",
   "description": "Backend of Job Portal",
-  "main": "index.js",
+  "main": "app.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
+    "dev": "node --loader ts-node/esm src/app.ts"
   },
   "author": "Sheejan Tripathi",
   "license": "ISC",
@@ -14,11 +15,13 @@
     "express": "^4.19.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.1",
+    "typecript": "^0.0.1-security",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.30",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.3"
