@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "target": "esnext", // or a specific ECMAScript target like "es6"
-    "module": "commonjs",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "moduleResolution": "node",
     "lib": ["esnext", "dom"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

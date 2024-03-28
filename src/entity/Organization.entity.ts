@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Job } from "./Job";
-import { UUID } from "typeorm/driver/mongodb/bson.typings";
+import { Job } from "./Job.entity.js";
 
 //Defining separate class for contact details
 

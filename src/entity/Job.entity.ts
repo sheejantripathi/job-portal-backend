@@ -1,6 +1,6 @@
 // src/entity/Job.ts
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
-import { Organization } from "./Organization";
+import { Organization } from "./Organization.entity.js";
 
 @Entity()
 export class Job {
