@@ -1,45 +1,44 @@
 import { Request, Response } from "express";
-import { OrganizationService } from "../service/OrganizationService.js";
-import { parse } from "path";
+import { GuestJobService } from "../service/GuestJobService.js";
 
-export class OrganizationController {
-    private organizationService = new OrganizationService();
+export class GuestJobController {
+    private GuestJobService = new GuestJobService();
 
-    async createOrganization(req: Request, res: Response) {
+    async createJob(req: Request, res: Response) {
         try {
-            const organization = await this.organizationService.createOrganization(req.body);
-            res.status(201).json(organization);
+            const job = await this.GuestJobService.createJob(req.body);
+            res.status(201).json(job);
         } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    async getOrganization(req: Request, res: Response) {
+    async getJob(req: Request, res: Response) {
         try {
             console.log(req.params, 'params')
             const { id } = req.params;
 
-            const organization = await this.organizationService.getOrganization(parseInt(id, 10));
+            const organization = await this.GuestJobService.getJob(id);
             res.status(200).json(organization);
         } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    async getOrganizations(req: Request, res: Response) {
+    async getJobs(req: Request, res: Response) {
         try {
-            const organizations = await this.organizationService.getOrganizations();
+            const organizations = await this.GuestJobService.getJobs();
             res.status(200).json(organizations);
         } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
     }
 
-    async updateOrganization(req: Request, res: Response) {
+    async updateJob(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const updateData = req.body;
-            const organization = await this.organizationService.updateOrganization(parseInt(id, 10), updateData);
+            const organization = await this.GuestJobService.updateJob(id, updateData);
             res.status(201).json(organization);
 
         }catch(error: any){
@@ -47,10 +46,10 @@ export class OrganizationController {
         }
     }
 
-    async deleteOrganization(req: Request, res: Response) {
+    async deleteJob(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            await this.organizationService.deleteOrganization(parseInt(id, 10));
+            await this.GuestJobService.deleteJob(id);
             res.status(204).end();
         } catch (error: any) {
             res.status(500).json({ message: error.message });
