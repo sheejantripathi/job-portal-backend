@@ -14,7 +14,6 @@ interface OrganizationType {
     description: string;
     location: string;
     contactDetails: ContactDetails;
-
 }
 
 export class OrganizationService {
@@ -25,18 +24,39 @@ export class OrganizationService {
         return await organizationRepository.save(newOrganization);
     }
 
+    async getOrganization(id: number): Promise<Organization>{
+        const organizationRepository = AppDataSource.getRepository(Organization);
+        const organization =  await organizationRepository.findOneBy({id});
+        if(!organization) {
+            throw new Error('Organization not found');
+        }
+        return organization;
+    }
+
     async getOrganizations(): Promise<Organization[]>{
         const organizationRepository = AppDataSource.getRepository(Organization);
         return await organizationRepository.find();
     }
 
-    async updateOrganization(organization: Organization): Promise<Organization>{
+    async updateOrganization(id: number, updateData: any): Promise<Organization>{
         const organizationRepository = AppDataSource.getRepository(Organization);
-        return await organizationRepository.save(organization);
+
+        let organization = await organizationRepository.findOneBy({ id });
+        if (!organization) {
+            throw new Error('Organization not found');
+        }
+
+       // Update the organization entity with new data
+        const updatedOrganization = organizationRepository.merge(organization, updateData);
+
+        // Save the updated entity
+        await organizationRepository.save(updatedOrganization);
+
+        return updatedOrganization;
     }
 
-    async deleteOrganization(organization: Organization): Promise<void>{
+    async deleteOrganization(id: number): Promise<void>{
         const organizationRepository = AppDataSource.getRepository(Organization);
-        await organizationRepository.remove(organization);
+        await organizationRepository.delete(id);
     }
 }

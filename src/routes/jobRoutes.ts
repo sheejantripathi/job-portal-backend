@@ -1,13 +1,14 @@
 import {Router} from 'express';	
-import {OrganizationController} from '../controller/OrganizationController.js';
+import {JobController} from '../controller/JobController.js';
 
 const router = Router();
-const organizationController = new OrganizationController();
+const jobController = new JobController();
 
-router.post("/", organizationController.createOrganization.bind(organizationController));
-router.get("/", organizationController.getOrganizations.bind(organizationController));
-router.put("/", organizationController.updateOrganization.bind(organizationController));
-router.delete("/", organizationController.deleteOrganization.bind(organizationController));
-
+//routes for the jons with registered organization
+router.post("/", jobController.createJob.bind(jobController));
+router.get("/:id", jobController.getJob.bind(jobController));
+router.get("/", jobController.getJobs.bind(jobController));
+router.put("/:id", jobController.updateJob.bind(jobController));
+router.delete("/:id", jobController.deleteJob.bind(jobController));
 
 export default router;

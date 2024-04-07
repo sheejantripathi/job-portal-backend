@@ -17,6 +17,6 @@ export class Job {
     salaryRange!: string
 
     // Defining many-to-one relationship between Job and Organization
-    @ManyToOne(() => Organization, organization => organization.jobs)
-    organization!: Organization;
+    @ManyToOne(() => Organization, organization => organization.jobs, {nullable: true})
+    organization!: Organization | null;
 }
