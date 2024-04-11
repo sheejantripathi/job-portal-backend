@@ -1,3 +1,4 @@
+import { Repository } from "typeorm";
 import { AppDataSource } from "../dataSource.js";
 import { GuestJob } from "../entity/Guestjob.entity.js";
 
@@ -18,15 +19,18 @@ interface GuestJobType {
 }
 
 export class GuestJobService {
+    private guestJobRepository : Repository<GuestJob>;
+
+    constructor() {
+        this.guestJobRepository = AppDataSource.getRepository(GuestJob);
+    }
     async createJob(job: GuestJobType): Promise<GuestJob>{
-        const jobRepository = AppDataSource.getRepository(GuestJob);
-        const newJob  =  jobRepository.create(job);
-        return await jobRepository.save(newJob);
+        const newJob  =  this.guestJobRepository.create(job);
+        return await this.guestJobRepository.save(newJob);
     }
 
     async getJob(id: string): Promise<GuestJob>{
-        const jobRepository = AppDataSource.getRepository(GuestJob);
-        const job =  await jobRepository.findOneBy({id});
+        const job =  await  this.guestJobRepository.findOneBy({id});
         if(!job) {
             throw new Error('Job is not available');
         }
@@ -34,29 +38,26 @@ export class GuestJobService {
     }
 
     async getJobs(): Promise<GuestJob[]>{
-        const jobRepository = AppDataSource.getRepository(GuestJob);
-        return await jobRepository.find();
+        return await  this.guestJobRepository.find();
     }
 
     async updateJob(id: string, updateData: any): Promise<GuestJob>{
-        const jobRepository = AppDataSource.getRepository(GuestJob);
 
-        let job = await jobRepository.findOneBy({ id });
+        let job = await  this.guestJobRepository.findOneBy({ id });
         if (!job) {
             throw new Error('Job not found');
         }
 
        // Update the job entity with new data
-        const updatedOrganization = jobRepository.merge(job, updateData);
+        const updatedOrganization =  this.guestJobRepository .merge(job, updateData);
 
         // Save the updated entity
-        await jobRepository.save(updatedOrganization);
+        await  this.guestJobRepository.save(updatedOrganization);
 
         return updatedOrganization;
     }
 
     async deleteJob(id: string): Promise<void>{
-        const jobRepository = AppDataSource.getRepository(GuestJob);
-        await jobRepository.delete(id);
+        await  this.guestJobRepository.delete(id);
     }
 }
