@@ -1,3 +1,4 @@
+import { Repository } from "typeorm";
 import { AppDataSource } from "../dataSource.js";
 import { Organization } from "../entity/Organization.entity.js";
 
@@ -17,16 +18,18 @@ interface OrganizationType {
 }
 
 export class OrganizationService {
+    private organizationRepository!: Repository<Organization>;
+
+    contructor() {
+        this.organizationRepository = AppDataSource.getRepository(Organization);
+    }
     async createOrganization(organization: OrganizationType): Promise<Organization>{
-        console.log(organization);
-        const organizationRepository = AppDataSource.getRepository(Organization);
-        const newOrganization  =  organizationRepository.create(organization);
-        return await organizationRepository.save(newOrganization);
+        const newOrganization  =  this.organizationRepository.create(organization);
+        return await this.organizationRepository.save(newOrganization);
     }
 
     async getOrganization(id: number): Promise<Organization>{
-        const organizationRepository = AppDataSource.getRepository(Organization);
-        const organization =  await organizationRepository.findOneBy({id});
+        const organization =  await this.organizationRepository.findOneBy({id});
         if(!organization) {
             throw new Error('Organization not found');
         }
@@ -34,29 +37,26 @@ export class OrganizationService {
     }
 
     async getOrganizations(): Promise<Organization[]>{
-        const organizationRepository = AppDataSource.getRepository(Organization);
-        return await organizationRepository.find();
+        return await this.organizationRepository.find();
     }
 
     async updateOrganization(id: number, updateData: any): Promise<Organization>{
-        const organizationRepository = AppDataSource.getRepository(Organization);
 
-        let organization = await organizationRepository.findOneBy({ id });
+        let organization = await this.organizationRepository.findOneBy({ id });
         if (!organization) {
             throw new Error('Organization not found');
         }
 
        // Update the organization entity with new data
-        const updatedOrganization = organizationRepository.merge(organization, updateData);
+        const updatedOrganization = this.organizationRepository.merge(organization, updateData);
 
         // Save the updated entity
-        await organizationRepository.save(updatedOrganization);
+        await this.organizationRepository.save(updatedOrganization);
 
         return updatedOrganization;
     }
 
     async deleteOrganization(id: number): Promise<void>{
-        const organizationRepository = AppDataSource.getRepository(Organization);
-        await organizationRepository.delete(id);
+        await this.organizationRepository.delete(id);
     }
 }

@@ -15,7 +15,6 @@ export class JobController {
 
     async getJob(req: Request, res: Response) {
         try {
-            console.log(req.params, 'params')
             const { id } = req.params;
 
             const organization = await this.JobService.getJob(parseInt(id, 10));
@@ -48,7 +47,8 @@ export class JobController {
 
     async deleteJob(req: Request, res: Response) {
         try {
-            await this.JobService.deleteJob(req.body);
+            const {id} = req.params;
+            await this.JobService.deleteJob(parseInt(id, 10));
             res.status(204).end();
         } catch (error: any) {
             res.status(500).json({ message: error.message });
