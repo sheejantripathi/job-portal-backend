@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, {Request, Response, NextFunction} from 'express';
 
 //import data source for typeorm connection
 import 'reflect-metadata';
@@ -12,10 +12,13 @@ import { HttpError } from 'http-errors';
 import jobRoutes from './routes/jobRoutes.js';
 import guestJobRoutes from './routes/guestJobsRoutes.js';
 import  organizationRoutes from './routes/organizationRoutes.js';
+import candidateRoutes from './routes/candidateRoutes.js';
+
+//import error handler middleware
+import { errorHandler } from './middlewares/errorHandler.js';
 
 //setup for environment variable in env file
 import * as dotenv from 'dotenv';
-import { NextFunction } from 'connect';
 dotenv.config();
 
 
@@ -23,21 +26,10 @@ AppDataSource.initialize()
     .then(() => {
         const app = express();
         app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
 
         app.get('/', (req: Request, res: Response) => {
             res.send('Hello World');
-        });
-
-        //error handling middleware
-        app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-            // The status code is set by the http-errors module or defaults to 500
-            res.status(err.status || 500);
-
-            //responiding with the error or a generic message
-            res.send({
-                message: err.message,
-                error: req.app.get('env') === 'development' ? err : {},
-            })
         });
 
         app.use(morgan('dev'));
@@ -46,6 +38,10 @@ AppDataSource.initialize()
         app.use('/api/jobs', jobRoutes);
         app.use('/api/organizations', organizationRoutes);
         app.use('/api/guestJobs', guestJobRoutes);
+        app.use('/api/candidate', candidateRoutes)
+
+        //error handling middleware
+        app.use(errorHandler);
 
         //express server port setup
         const PORT = process.env.PORT || 3000;

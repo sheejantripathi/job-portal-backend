@@ -1,4 +1,4 @@
-import {Router} from 'express';	
+import e, {Router} from 'express';	
 
 import {CandidateInfoController} from '../controller/CandidateInfoController.js';
 
@@ -10,3 +10,4 @@ router.get("/:id", candidateInfoController.getCandidateInfo.bind(candidateInfoCo
 router.put("/:id", candidateInfoController.updateCandidateInfo.bind(candidateInfoController));
 router.delete("/:id", candidateInfoController.deleteCandidateInfo.bind(candidateInfoController));
 
+export default router;

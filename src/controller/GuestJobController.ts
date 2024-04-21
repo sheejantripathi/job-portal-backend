@@ -49,7 +49,7 @@ export class GuestJobController {
     async deleteJob(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            await this.GuestJobService.deleteJob(parseInt(id, 10));
+            await this.GuestJobService.deleteJob(id);
             res.status(204).end();
         } catch (error: any) {
             res.status(500).json({ message: error.message });

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { CandidateProfile } from "./CandidateProfile.entity.js";
 
 @Entity()
@@ -15,7 +15,7 @@ export class Experience {
     @Column()
     position!: string;
 
-    @Column()
+    @Column({nullable: true})
     location!: string;
 
     @Column()
@@ -24,21 +24,18 @@ export class Experience {
     @Column()
     endDate!: Date;
 
-    @Column()
+    @Column({nullable: true})
     description!: string;
 
-    @Column()
+    @Column({ type: "boolean", default: false})
     isCurrentlyWorking!: boolean;
 
-    @Column()
+    @CreateDateColumn()
     createdAt!: Date;
 
-    @Column()
+    @UpdateDateColumn()
     updatedAt!: Date;
 
-    @Column()
-    deletedAt!: Date;
-
-    @Column()
+    @Column({ type: "boolean", default: false})
     isVerified!: boolean;
 }

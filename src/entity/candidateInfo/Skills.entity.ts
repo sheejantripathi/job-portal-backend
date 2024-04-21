@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { CandidateProfile } from "./CandidateProfile.entity.js";
 
 @Entity()
@@ -15,10 +15,10 @@ export class Skills {
     @Column()
     yearsOfExperience!: number;
 
-    @Column()
+    @CreateDateColumn()
     createdAt!: Date;
 
-    @Column()
+    @UpdateDateColumn()
     updatedAt!: Date;
 
     @Column({ type: "boolean", default: false})
