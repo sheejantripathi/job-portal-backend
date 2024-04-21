@@ -1,6 +1,7 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../dataSource.js";
 import { CandidateProfile } from "../entity/candidateInfo/CandidateProfile.entity.js";
+import * as bcrypt from "bcrypt";
 
 export class CandidateService {
     private candidateRepository : Repository<CandidateProfile>;
@@ -44,5 +45,22 @@ export class CandidateService {
 
     async deleteCandidate(id: number): Promise<void> {
         await this.candidateRepository.delete(id);
+    }
+
+    async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
+        return await bcrypt.compare(password, hashedPassword);
+    }
+
+    async authenticateCandidate(email: string, password: string): Promise<CandidateProfile> {
+        const candidate = await this.candidateRepository.findOneBy({ email });
+        if (!candidate) {
+            throw new Error('Candidate not found');
+        }
+
+        const isPasswordMatched = await this.validatePassword(password, candidate.password);
+        if (!isPasswordMatched) {
+            throw new Error('Invalid password');
+        }
+        return candidate;
     }
 }
