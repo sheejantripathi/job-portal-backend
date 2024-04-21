@@ -1,20 +1,20 @@
 import { Repository } from "typeorm";
-import { AppDataSource } from "../dataSource";
-import { User } from "../entity/candidateInfo/User.entity.js";
+import { AppDataSource } from "../dataSource.js";
+import { CandidateProfile } from "../entity/candidateInfo/CandidateProfile.entity.js";
 
 export class CandidateService {
-    private candidateRepository : Repository<User>;
+    private candidateRepository : Repository<CandidateProfile>;
 
     constructor() {
-        this.candidateRepository = AppDataSource.getRepository(User);
+        this.candidateRepository = AppDataSource.getRepository(CandidateProfile);
     }
 
-    async CreateCandidate(candidate: User): Promise<User> {
+    async CreateCandidate(candidate: CandidateProfile): Promise<CandidateProfile> {
         const newCandidate =  this.candidateRepository.create(candidate);
         return await this.candidateRepository.save(newCandidate);
     }
 
-    async getCandidate(id: number): Promise<User> {
+    async getCandidate(id: number): Promise<CandidateProfile> {
         const candidate =  await this.candidateRepository.findOneBy({id});
         if(!candidate) {
             throw new Error('Candidate not found');
@@ -22,11 +22,11 @@ export class CandidateService {
         return candidate;
     }
 
-    async getCandidates(): Promise<User[]> {
+    async getCandidates(): Promise<CandidateProfile[]> {
         return await this.candidateRepository.find();
     }
 
-    async updateCandidate(id: number, updateData: any): Promise<User> {
+    async updateCandidate(id: number, updateData: any): Promise<CandidateProfile> {
 
         let candidate = await this.candidateRepository.findOneBy({ id });
         if (!candidate) {

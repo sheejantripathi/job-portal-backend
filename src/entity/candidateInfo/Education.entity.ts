@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { CandidateProfile } from "./CandidateProfile.entity.js";
 
 @Entity()
@@ -15,7 +15,7 @@ export class Education {
     @Column()
     degree!: string;
 
-    @Column()
+    @Column({nullable: true})
     fieldOfStudy!: string;
 
     @Column()
@@ -24,28 +24,25 @@ export class Education {
     @Column()
     endYear!: number;
 
-    @Column()
+    @Column({nullable: true})
     grade!: string;
 
-    @Column()
+    @Column({nullable: true})
     activities!: string;
 
-    @Column()
+    @Column({nullable: true})
     description!: string;
 
-    @Column()
+    @Column({ type: "boolean", default: false})
     isCurrentlyStudying!: boolean;
 
-    @Column()
+    @CreateDateColumn()
     createdAt!: Date;
 
-    @Column()
+    @UpdateDateColumn()
     updatedAt!: Date;
 
-    @Column()
-    deletedAt!: Date;
-
-    @Column()
+    @Column({ type: "boolean", default: false})
     isVerified!: boolean;
 
 }
