@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn  } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert  } from "typeorm";
 import { Education } from "./Education.entity.js";
 import { Experience } from "./Experience.entity.js";
 import { Skills } from "./Skills.entity.js";
+import * as bcrypt from "bcrypt";
 
 export enum GenderType {
     Male = "MALE",
@@ -54,5 +55,11 @@ export class CandidateProfile {
 
     @OneToMany(() => Skills, skills => skills.candidateProfile, {cascade: true})
     skills!: Skills[];
+
+    // Hash password before saving to the database
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10); //10 rounds of salting included
+    }
     
 }

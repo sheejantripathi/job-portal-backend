@@ -48,4 +48,14 @@ export class CandidateInfoController {
             
         }
     }
+
+    async candidateLogin(req: Request, res: Response) {
+        try {
+            const {email, password} = req.body;
+            const candidate = await this.candidateService.authenticateCandidate(email, password);
+            res.status(200).json(candidate)
+        } catch (error: any) {
+            res.status(500).json({message: error.message})
+        }
+    }
 }
