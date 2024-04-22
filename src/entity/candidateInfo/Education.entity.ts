@@ -19,10 +19,10 @@ export class Education {
     fieldOfStudy!: string;
 
     @Column()
-    startYear!: number;
+    startDate!: number;
 
     @Column()
-    endYear!: number;
+    endDate!: number;
 
     @Column({nullable: true})
     grade!: string;
