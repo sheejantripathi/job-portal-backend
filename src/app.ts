@@ -14,8 +14,14 @@ import guestJobRoutes from './routes/guestJobsRoutes.js';
 import  organizationRoutes from './routes/organizationRoutes.js';
 import candidateRoutes from './routes/candidateRoutes.js';
 
+//import joivalidation schemas
+import { candidateSchema } from './utils/joi-schema/candidate.js';
+
 //import error handler middleware
 import { errorHandler } from './middlewares/errorHandler.js';
+
+//import joi validation middleware
+import validateJoiSchema from './middlewares/joiValidate.js';
 
 //setup for environment variable in env file
 import * as dotenv from 'dotenv';
@@ -38,7 +44,7 @@ AppDataSource.initialize()
         app.use('/api/jobs', jobRoutes);
         app.use('/api/organizations', organizationRoutes);
         app.use('/api/guestJobs', guestJobRoutes);
-        app.use('/api/candidate', candidateRoutes)
+        app.use('/api/candidate', validateJoiSchema(candidateSchema), candidateRoutes)
 
         //error handling middleware
         app.use(errorHandler);
